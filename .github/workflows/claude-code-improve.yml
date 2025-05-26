@@ -1,5 +1,10 @@
 name: Claude Code Site Improvement
 
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
 on:
   issues:
     types: [opened, edited]
