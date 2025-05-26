@@ -1,0 +1,16 @@
+{
+  "name": "claude-code-sandbox",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
+
+  "features": {
+    // Node 20 を入れる（CLI の必須条件）
+    "ghcr.io/devcontainers/features/node:1": { "version": "20" },
+
+    // Claude Code CLI を global install
+    "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {}
+  },
+
+  "remoteEnv": {
+    "ANTHROPIC_API_KEY": "${localEnv:ANTHROPIC_API_KEY}"
+  }
+}
