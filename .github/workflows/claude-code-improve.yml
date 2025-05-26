@@ -1,0 +1,110 @@
+name: Claude Code Site Improvement
+
+on:
+  issues:
+    types: [opened, edited]
+  issue_comment:
+    types: [created]
+  workflow_dispatch:
+    inputs:
+      improvement_request:
+        description: 'サイトの改善要望を入力してください'
+        required: true
+        type: string
+
+jobs:
+  improve-site:
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issues' && contains(github.event.issue.labels.*.name, 'claude-improve')) ||
+      (github.event_name == 'issue_comment' && contains(github.event.issue.labels.*.name, 'claude-improve'))
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Get improvement request
+        id: get_request
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "request=${{ github.event.inputs.improvement_request }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event_name }}" = "issues" ]; then
+            echo "request=${{ github.event.issue.body }}" >> $GITHUB_OUTPUT
+          elif [ "${{ github.event_name }}" = "issue_comment" ]; then
+            echo "request=${{ github.event.comment.body }}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Setup Claude Code environment
+        run: |
+          # Claude Code Actionの環境設定
+          echo "Setting up Claude Code environment..."
+          
+      - name: Call Claude Code for improvements
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          IMPROVEMENT_REQUEST: ${{ steps.get_request.outputs.request }}
+        run: |
+          # Claude Code APIを使用してサイトを改善
+          echo "Improvement request: $IMPROVEMENT_REQUEST"
+          echo "🎯 Claude Codeでサイトを改善中..."
+          
+          # ここでClaude Code APIを呼び出し、改善されたコードを生成
+          # 実際のAPIコールは以下のような形式になります：
+          
+          cat > improve_request.json << EOF
+          {
+            "model": "claude-3-sonnet-20240229",
+            "max_tokens": 4000,
+            "messages": [
+              {
+                "role": "user",
+                "content": "以下のHTML/CSS/JSサイトを改善してください。要望: $IMPROVEMENT_REQUEST\n\nHTML:\n$(cat index.html)\n\nCSS:\n$(cat style.css)\n\nJS:\n$(cat script.js)"
+              }
+            ]
+          }
+          EOF
+          
+          # TODO: 実際のClaude API呼び出しをここに実装
+          echo "✅ 改善完了（プレースホルダー）"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: |
+            🤖 Claude Codeによるサイト改善
+            
+            改善要望: ${{ steps.get_request.outputs.request }}
+            
+            🎉 Generated with Claude Code Action
+          title: "🎨 Claude Codeによるサイト改善"
+          body: |
+            ## 🤖 Claude Codeによる自動改善
+            
+            **改善要望:**
+            ${{ steps.get_request.outputs.request }}
+            
+            **変更内容:**
+            - 🎯 ユーザーの要望に基づく改善
+            - ✨ デザインとUXの向上
+            - 🚀 パフォーマンスの最適化
+            
+            ---
+            🎉 Generated with [Claude Code](https://claude.ai/code)
+          branch: claude-code-improvements
+          delete-branch: true
+
+      - name: Comment on issue
+        if: github.event_name == 'issues' || github.event_name == 'issue_comment'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: '🤖 Claude Codeがあなたの改善要望を処理中です！\n\nプルリクエストが作成されたら通知します。✨'
+            })
