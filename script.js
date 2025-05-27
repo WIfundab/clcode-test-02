@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeEffects();
     createFloatingEmojis();
     addRandomColorChanges();
+    initializeShrimpEffects();
 });
 
 // フラッシュメッセージを表示する関数
@@ -50,7 +51,7 @@ function initializeEffects() {
 
 // 浮遊する絵文字を作成
 function createFloatingEmojis() {
-    const emojis = ['⭐', '🌟', '✨', '💫', '🎊', '🎉', '🚀', '💥'];
+    const emojis = ['⭐', '🌟', '✨', '💫', '🎊', '🎉', '🚀', '💥', '🦐', '🦐', '🦐'];
     
     setInterval(() => {
         const emoji = document.createElement('div');
@@ -230,3 +231,230 @@ function createExplosion() {
         animate();
     }
 }
+
+// 🦐 エビ特別効果の初期化 🦐
+function initializeShrimpEffects() {
+    const shrimps = document.querySelectorAll('.dancing-shrimp');
+    const shrimpMessages = [
+        '🦐 エビエビ〜！',
+        '🦐 ダンスタイム！',
+        '🦐 プリプリ〜！',
+        '🦐 エビフライになりたい！',
+        '🦐 踊るエビは幸せエビ！',
+        '🦐 クルクル〜！',
+        '🦐 エビパワー全開！'
+    ];
+    
+    shrimps.forEach((shrimp, index) => {
+        // エビクリック効果
+        shrimp.addEventListener('click', function() {
+            shrimpClickEffect(this, shrimpMessages);
+            createShrimpExplosion(this);
+            playRandomShrimpSound();
+        });
+        
+        // ランダムな追加アニメーション
+        setInterval(() => {
+            if (Math.random() < 0.3) { // 30%の確率
+                addRandomShrimpEffect(shrimp);
+            }
+        }, 3000 + (index * 500)); // エビごとに異なるタイミング
+    });
+    
+    // エビの浮遊効果を追加
+    createFloatingShrimps();
+}
+
+// エビクリック効果
+function shrimpClickEffect(shrimp, messages) {
+    const originalText = shrimp.textContent;
+    const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+    
+    // 一時的にメッセージを表示
+    shrimp.textContent = randomMessage;
+    shrimp.style.fontSize = '2rem';
+    shrimp.style.background = 'rgba(255, 255, 255, 0.9)';
+    shrimp.style.color = '#ff1744';
+    shrimp.style.padding = '10px';
+    shrimp.style.borderRadius = '15px';
+    shrimp.style.border = '3px solid #ff6b9d';
+    
+    setTimeout(() => {
+        shrimp.textContent = originalText;
+        shrimp.style.fontSize = '';
+        shrimp.style.background = '';
+        shrimp.style.color = '';
+        shrimp.style.padding = '';
+        shrimp.style.borderRadius = '';
+        shrimp.style.border = '';
+    }, 1500);
+}
+
+// エビ爆発効果
+function createShrimpExplosion(shrimp) {
+    const rect = shrimp.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    for (let i = 0; i < 8; i++) {
+        const miniShrimp = document.createElement('div');
+        miniShrimp.textContent = '🦐';
+        miniShrimp.style.position = 'fixed';
+        miniShrimp.style.left = centerX + 'px';
+        miniShrimp.style.top = centerY + 'px';
+        miniShrimp.style.fontSize = '1.5rem';
+        miniShrimp.style.zIndex = '10000';
+        miniShrimp.style.pointerEvents = 'none';
+        
+        const angle = (i / 8) * Math.PI * 2;
+        const velocity = Math.random() * 150 + 100;
+        const vx = Math.cos(angle) * velocity;
+        const vy = Math.sin(angle) * velocity;
+        
+        document.body.appendChild(miniShrimp);
+        
+        let x = 0, y = 0, opacity = 1;
+        const animate = () => {
+            x += vx * 0.015;
+            y += vy * 0.015 + 2; // 重力効果
+            opacity -= 0.02;
+            
+            miniShrimp.style.transform = `translate(${x}px, ${y}px) rotate(${x * 2}deg)`;
+            miniShrimp.style.opacity = opacity;
+            
+            if (opacity > 0) {
+                requestAnimationFrame(animate);
+            } else {
+                miniShrimp.remove();
+            }
+        };
+        animate();
+    }
+}
+
+// ランダムエビ効果音（視覚的）
+function playRandomShrimpSound() {
+    const sounds = ['POP!', 'BOING!', 'SPLASH!', 'WIGGLE!', 'DANCE!'];
+    const soundElement = document.createElement('div');
+    const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
+    
+    soundElement.textContent = randomSound;
+    soundElement.style.position = 'fixed';
+    soundElement.style.top = '20%';
+    soundElement.style.left = '50%';
+    soundElement.style.transform = 'translateX(-50%)';
+    soundElement.style.fontSize = '3rem';
+    soundElement.style.fontWeight = '900';
+    soundElement.style.color = '#ff6b9d';
+    soundElement.style.textShadow = '3px 3px 0 #000';
+    soundElement.style.zIndex = '10001';
+    soundElement.style.pointerEvents = 'none';
+    soundElement.style.animation = 'soundBounce 1s ease-out forwards';
+    
+    document.body.appendChild(soundElement);
+    
+    setTimeout(() => {
+        soundElement.remove();
+    }, 1000);
+}
+
+// ランダムエビ効果
+function addRandomShrimpEffect(shrimp) {
+    const effects = [
+        () => { // レインボー効果
+            shrimp.style.animation = 'none';
+            shrimp.style.filter = 'hue-rotate(0deg) drop-shadow(0 0 20px #ff6b9d)';
+            let hue = 0;
+            const rainbow = setInterval(() => {
+                hue += 10;
+                shrimp.style.filter = `hue-rotate(${hue}deg) drop-shadow(0 0 20px #ff6b9d)`;
+                if (hue >= 360) {
+                    clearInterval(rainbow);
+                    shrimp.style.animation = '';
+                    shrimp.style.filter = '';
+                }
+            }, 50);
+        },
+        () => { // 巨大化効果
+            shrimp.style.transform = 'scale(2)';
+            shrimp.style.zIndex = '1000';
+            setTimeout(() => {
+                shrimp.style.transform = '';
+                shrimp.style.zIndex = '';
+            }, 1000);
+        },
+        () => { // 分身効果
+            const clone = shrimp.cloneNode(true);
+            clone.style.position = 'absolute';
+            clone.style.opacity = '0.5';
+            clone.style.filter = 'blur(2px)';
+            shrimp.parentNode.appendChild(clone);
+            setTimeout(() => {
+                clone.remove();
+            }, 2000);
+        }
+    ];
+    
+    const randomEffect = effects[Math.floor(Math.random() * effects.length)];
+    randomEffect();
+}
+
+// 浮遊エビを作成
+function createFloatingShrimps() {
+    setInterval(() => {
+        if (Math.random() < 0.4) { // 40%の確率
+            const floatingShrimp = document.createElement('div');
+            floatingShrimp.textContent = '🦐';
+            floatingShrimp.style.position = 'fixed';
+            floatingShrimp.style.left = Math.random() * 100 + 'vw';
+            floatingShrimp.style.bottom = '-50px';
+            floatingShrimp.style.fontSize = (Math.random() * 20 + 30) + 'px';
+            floatingShrimp.style.zIndex = '500';
+            floatingShrimp.style.pointerEvents = 'none';
+            floatingShrimp.style.animation = 'shrimpFloatUp 6s linear forwards';
+            floatingShrimp.style.filter = 'drop-shadow(0 0 10px rgba(255, 107, 157, 0.8))';
+            
+            document.body.appendChild(floatingShrimp);
+            
+            setTimeout(() => {
+                if (floatingShrimp.parentNode) {
+                    floatingShrimp.remove();
+                }
+            }, 6000);
+        }
+    }, 3000);
+}
+
+// 浮遊エビアニメーション用CSS追加
+const shrimpStyle = document.createElement('style');
+shrimpStyle.textContent = `
+    @keyframes shrimpFloatUp {
+        from {
+            transform: translateY(0) rotate(0deg);
+            opacity: 0.8;
+        }
+        50% {
+            opacity: 1;
+        }
+        to {
+            transform: translateY(-120vh) rotate(720deg);
+            opacity: 0;
+        }
+    }
+    
+    @keyframes soundBounce {
+        0% {
+            transform: translateX(-50%) scale(0) rotate(0deg);
+            opacity: 1;
+        }
+        50% {
+            transform: translateX(-50%) scale(1.2) rotate(180deg);
+            opacity: 1;
+        }
+        100% {
+            transform: translateX(-50%) scale(0.8) rotate(360deg);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(shrimpStyle);
