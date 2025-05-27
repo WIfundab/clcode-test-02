@@ -4,7 +4,7 @@
   "messages": [
     {
       "role": "user",
-      "content": "以下のHTML/CSS/JSサイトを改善してください。要望: 要望にしたがって、html、css、js、すべてを編集せよ\n\nHTML:\n<!DOCTYPE html>
+      "content": "以下のHTML/CSS/JSサイトを改善してください。要望: @claude サイトデザインを変更してください 文字を小さく\n\nHTML:\n<!DOCTYPE html>
 <html lang="ja">
 <head>
     <meta charset="UTF-8">
