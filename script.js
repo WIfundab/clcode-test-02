@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeCosmicEffects();
     createGalaxyParticles();
     addCosmicSoundEffects();
+    initializeNightMode();
 });
 
 // フラッシュメッセージを表示する関数
@@ -813,3 +814,177 @@ cosmicAnimationStyle.textContent = `
     }
 `;
 document.head.appendChild(cosmicAnimationStyle);
+
+// 🌙 Night Mode Functionality 🌙
+function initializeNightMode() {
+    // ローカルストレージから設定を読み込み
+    const savedMode = localStorage.getItem('nightMode');
+    if (savedMode === 'true') {
+        document.body.classList.add('night-mode');
+        updateToggleButton(true);
+    }
+}
+
+function toggleNightMode() {
+    const body = document.body;
+    const isNightMode = body.classList.contains('night-mode');
+    
+    if (isNightMode) {
+        // Light mode に切り替え
+        body.classList.remove('night-mode');
+        localStorage.setItem('nightMode', 'false');
+        updateToggleButton(false);
+        createModeTransitionEffect('☀️', '#ffff00');
+    } else {
+        // Night mode に切り替え
+        body.classList.add('night-mode');
+        localStorage.setItem('nightMode', 'true');
+        updateToggleButton(true);
+        createModeTransitionEffect('🌙', '#bb86fc');
+    }
+}
+
+function updateToggleButton(isNightMode) {
+    const toggleBtn = document.getElementById('night-mode-btn');
+    const toggleIcon = toggleBtn.querySelector('.toggle-icon');
+    const toggleText = toggleBtn.querySelector('.toggle-text');
+    
+    if (isNightMode) {
+        toggleIcon.textContent = '☀️';
+        toggleText.textContent = 'ライトモード';
+    } else {
+        toggleIcon.textContent = '🌙';
+        toggleText.textContent = 'ナイトモード';
+    }
+}
+
+function createModeTransitionEffect(icon, color) {
+    // 画面全体に広がる遷移効果
+    const overlay = document.createElement('div');
+    overlay.style.position = 'fixed';
+    overlay.style.top = '0';
+    overlay.style.left = '0';
+    overlay.style.width = '100%';
+    overlay.style.height = '100%';
+    overlay.style.background = `radial-gradient(circle at center, ${color}20 0%, transparent 70%)`;
+    overlay.style.zIndex = '9998';
+    overlay.style.pointerEvents = 'none';
+    overlay.style.opacity = '0';
+    overlay.style.transition = 'opacity 0.5s ease';
+    
+    document.body.appendChild(overlay);
+    
+    // フェードイン・アウト効果
+    setTimeout(() => {
+        overlay.style.opacity = '1';
+    }, 10);
+    
+    setTimeout(() => {
+        overlay.style.opacity = '0';
+    }, 300);
+    
+    setTimeout(() => {
+        overlay.remove();
+    }, 800);
+    
+    // モード切替時の特別効果
+    createModeChangeExplosion(icon, color);
+    playModeChangeSound();
+}
+
+function createModeChangeExplosion(icon, color) {
+    const toggle = document.getElementById('night-mode-btn');
+    const rect = toggle.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    
+    for (let i = 0; i < 12; i++) {
+        const particle = document.createElement('div');
+        particle.textContent = icon;
+        particle.style.position = 'fixed';
+        particle.style.left = centerX + 'px';
+        particle.style.top = centerY + 'px';
+        particle.style.fontSize = '2rem';
+        particle.style.zIndex = '9999';
+        particle.style.pointerEvents = 'none';
+        particle.style.color = color;
+        particle.style.textShadow = `0 0 20px ${color}`;
+        
+        const angle = (i / 12) * Math.PI * 2;
+        const velocity = Math.random() * 150 + 100;
+        const vx = Math.cos(angle) * velocity;
+        const vy = Math.sin(angle) * velocity;
+        
+        document.body.appendChild(particle);
+        
+        let x = 0, y = 0, opacity = 1;
+        const animate = () => {
+            x += vx * 0.02;
+            y += vy * 0.02;
+            opacity -= 0.02;
+            
+            particle.style.transform = `translate(${x}px, ${y}px) rotate(${x * 3}deg) scale(${opacity})`;
+            particle.style.opacity = opacity;
+            
+            if (opacity > 0) {
+                requestAnimationFrame(animate);
+            } else {
+                particle.remove();
+            }
+        };
+        animate();
+    }
+}
+
+function playModeChangeSound() {
+    const sounds = ['✨ MODE CHANGE!', '🌙 NIGHT MODE!', '☀️ LIGHT MODE!', '🎆 COSMIC SHIFT!'];
+    const soundElement = document.createElement('div');
+    const randomSound = sounds[Math.floor(Math.random() * sounds.length)];
+    
+    soundElement.textContent = randomSound;
+    soundElement.style.position = 'fixed';
+    soundElement.style.top = '30%';
+    soundElement.style.left = '50%';
+    soundElement.style.transform = 'translateX(-50%)';
+    soundElement.style.fontSize = '3rem';
+    soundElement.style.fontWeight = '900';
+    soundElement.style.color = document.body.classList.contains('night-mode') ? '#bb86fc' : '#ffff00';
+    soundElement.style.textShadow = '0 0 30px currentColor';
+    soundElement.style.zIndex = '10001';
+    soundElement.style.pointerEvents = 'none';
+    soundElement.style.animation = 'modeChangeSound 2s ease-out forwards';
+    
+    document.body.appendChild(soundElement);
+    
+    setTimeout(() => {
+        soundElement.remove();
+    }, 2000);
+}
+
+// モード変更アニメーション用CSS追加
+const modeAnimationStyle = document.createElement('style');
+modeAnimationStyle.textContent = `
+    @keyframes modeChangeSound {
+        0% {
+            transform: translateX(-50%) scale(0) rotate(0deg);
+            opacity: 1;
+        }
+        25% {
+            transform: translateX(-50%) scale(1.2) rotate(90deg);
+            opacity: 1;
+        }
+        50% {
+            transform: translateX(-50%) scale(1) rotate(180deg);
+            opacity: 1;
+        }
+        75% {
+            transform: translateX(-50%) scale(1.1) rotate(270deg);
+            opacity: 0.8;
+        }
+        100% {
+            transform: translateX(-50%) scale(0.5) rotate(360deg);
+            opacity: 0;
+        }
+    }
+`;
+document.head.appendChild(modeAnimationStyle);

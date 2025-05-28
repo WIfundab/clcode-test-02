@@ -5,6 +5,115 @@
     box-sizing: border-box;
 }
 
+/* 🌙 Night Mode Variables 🌙 */
+:root {
+    --bg-primary: #000428;
+    --bg-secondary: #004e92;
+    --bg-tertiary: #009ffd;
+    --text-primary: #ffffff;
+    --text-secondary: #ffff00;
+    --accent-color: #ff0080;
+    --card-bg: rgba(0, 0, 0, 0.8);
+    --border-color: #ffff00;
+}
+
+body.night-mode {
+    --bg-primary: #0a0a0a;
+    --bg-secondary: #1a1a1a;
+    --bg-tertiary: #2d2d2d;
+    --text-primary: #e0e0e0;
+    --text-secondary: #bb86fc;
+    --accent-color: #03dac6;
+    --card-bg: rgba(20, 20, 20, 0.9);
+    --border-color: #bb86fc;
+}
+
+/* Night Mode Toggle Button */
+.night-mode-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 10000;
+}
+
+.night-toggle-btn {
+    background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+    border: 3px solid var(--border-color);
+    border-radius: 25px;
+    padding: 12px 20px;
+    color: var(--text-primary);
+    font-family: 'Arial Black', Arial, sans-serif;
+    font-weight: 900;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 
+        0 0 20px rgba(102, 126, 234, 0.4),
+        0 0 40px rgba(118, 75, 162, 0.3);
+    animation: nightTogglePulse 2s ease-in-out infinite;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.night-toggle-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 
+        0 0 30px rgba(102, 126, 234, 0.6),
+        0 0 60px rgba(118, 75, 162, 0.5);
+    animation: nightToggleShake 0.3s ease-in-out infinite;
+}
+
+.night-toggle-btn:active {
+    transform: scale(0.95);
+}
+
+.toggle-icon {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.night-toggle-btn:hover .toggle-icon {
+    transform: rotate(180deg);
+}
+
+body.night-mode .night-toggle-btn {
+    background: linear-gradient(45deg, #1a1a2e 0%, #16213e 100%);
+    border-color: var(--accent-color);
+    box-shadow: 
+        0 0 20px rgba(3, 218, 198, 0.4),
+        0 0 40px rgba(187, 134, 252, 0.3);
+}
+
+body.night-mode .toggle-icon::before {
+    content: '☀️';
+}
+
+body.night-mode .toggle-text::after {
+    content: 'ライトモード';
+}
+
+@keyframes nightTogglePulse {
+    0%, 100% { 
+        box-shadow: 
+            0 0 20px rgba(102, 126, 234, 0.4),
+            0 0 40px rgba(118, 75, 162, 0.3);
+    }
+    50% { 
+        box-shadow: 
+            0 0 30px rgba(102, 126, 234, 0.6),
+            0 0 60px rgba(118, 75, 162, 0.5);
+    }
+}
+
+@keyframes nightToggleShake {
+    0% { transform: scale(1.1) rotate(0deg); }
+    25% { transform: scale(1.1) rotate(1deg); }
+    50% { transform: scale(1.1) rotate(0deg); }
+    75% { transform: scale(1.1) rotate(-1deg); }
+    100% { transform: scale(1.1) rotate(0deg); }
+}
+
 body {
     font-family: 'Arial Black', Arial, sans-serif;
     background: 
@@ -12,14 +121,27 @@ body {
         radial-gradient(ellipse at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
         radial-gradient(ellipse at 40% 80%, rgba(120, 219, 226, 0.3) 0%, transparent 50%),
         radial-gradient(circle at 90% 90%, rgba(255, 165, 0, 0.2) 0%, transparent 50%),
-        linear-gradient(45deg, #000428, #004e92, #009ffd, #00d2ff),
+        linear-gradient(45deg, var(--bg-primary), var(--bg-secondary), var(--bg-tertiary), #00d2ff),
         linear-gradient(135deg, #667eea 0%, #764ba2 100%),
         radial-gradient(circle at center, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
     background-size: 800% 800%, 600% 600%, 700% 700%, 500% 500%, 400% 400%, 300% 300%, 100% 100%;
     animation: cosmicShift 8s ease infinite, nebulaFloat 15s ease-in-out infinite;
-    color: #fff;
+    color: var(--text-primary);
     overflow-x: hidden;
     position: relative;
+    transition: all 0.5s ease;
+}
+
+/* Night Mode Background */
+body.night-mode {
+    background: 
+        radial-gradient(ellipse at 20% 50%, rgba(187, 134, 252, 0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(3, 218, 198, 0.2) 0%, transparent 50%),
+        radial-gradient(ellipse at 40% 80%, rgba(33, 150, 243, 0.2) 0%, transparent 50%),
+        radial-gradient(circle at 90% 90%, rgba(156, 39, 176, 0.15) 0%, transparent 50%),
+        linear-gradient(45deg, var(--bg-primary), var(--bg-secondary), var(--bg-tertiary), #2d2d2d),
+        linear-gradient(135deg, #1a1a2e 0%, #16213e 100%),
+        radial-gradient(circle at center, #0a0a0a 0%, #1a1a1a 50%, #2d2d2d 100%);
 }
 
 @keyframes cosmicShift {
@@ -99,22 +221,23 @@ body {
 }
 
 .neon-border {
-    border: 5px solid #ffff00;
+    border: 5px solid var(--border-color);
     border-radius: 20px;
     padding: 20px;
     background: 
         radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.1) 0%, transparent 50%),
         radial-gradient(circle at 70% 70%, rgba(0, 255, 255, 0.1) 0%, transparent 50%),
-        rgba(0, 0, 0, 0.8);
+        var(--card-bg);
     box-shadow: 
-        0 0 20px #ffff00,
-        0 0 40px rgba(255, 255, 0, 0.5),
-        0 0 60px rgba(255, 255, 0, 0.3),
-        inset 0 0 20px rgba(255, 255, 0, 0.3),
-        inset 0 0 40px rgba(0, 255, 255, 0.1);
+        0 0 20px var(--border-color),
+        0 0 40px var(--border-color)80,
+        0 0 60px var(--border-color)50,
+        inset 0 0 20px var(--border-color)50,
+        inset 0 0 40px var(--accent-color)20;
     animation: cosmicNeonPulse 2s ease-in-out infinite alternate;
     position: relative;
     overflow: hidden;
+    transition: all 0.5s ease;
 }
 
 .neon-border::before {
@@ -194,19 +317,26 @@ body {
 
 .subtitle {
     font-size: 2rem;
-    color: #ffff00;
+    color: var(--text-secondary);
     text-shadow: 2px 2px 0 #000;
+    transition: color 0.5s ease;
 }
 
 /* プロモーションボックス */
 .promotion-box {
-    background: linear-gradient(45deg, #ff0000, #ff8000);
-    border: 5px solid #ffff00;
+    background: linear-gradient(45deg, var(--accent-color), #ff8000);
+    border: 5px solid var(--border-color);
     border-radius: 15px;
     padding: 20px;
     margin: 20px 0;
     text-align: center;
     animation: shake 0.5s infinite;
+    transition: all 0.5s ease;
+}
+
+body.night-mode .promotion-box {
+    background: linear-gradient(45deg, var(--accent-color), #9c27b0);
+    border-color: var(--accent-color);
 }
 
 @keyframes shake {
@@ -249,8 +379,9 @@ body {
 .new-price {
     font-size: 2.5rem;
     font-weight: 900;
-    color: #ffff00;
+    color: var(--text-secondary);
     text-shadow: 3px 3px 0 #000;
+    transition: color 0.5s ease;
 }
 
 /* フィーチャーグリッド */
@@ -269,6 +400,26 @@ body {
     position: relative;
     animation: wiggle 3s ease-in-out infinite;
     transform-origin: center;
+    transition: all 0.5s ease;
+}
+
+body.night-mode .feature-card {
+    border-color: var(--accent-color);
+}
+
+body.night-mode .feature-card.yellow {
+    background: linear-gradient(45deg, var(--accent-color), #ffc107);
+    color: #000;
+}
+
+body.night-mode .feature-card.pink {
+    background: linear-gradient(45deg, var(--accent-color), #e91e63);
+    color: #fff;
+}
+
+body.night-mode .feature-card.blue {
+    background: linear-gradient(45deg, var(--text-secondary), #2196f3);
+    color: #fff;
 }
 
 @keyframes wiggle {
@@ -356,12 +507,13 @@ body {
 
 /* ローリングテキスト */
 .rolling-text {
-    background: #000;
-    border: 3px solid #ffff00;
+    background: var(--card-bg);
+    border: 3px solid var(--border-color);
     overflow: hidden;
     white-space: nowrap;
     margin: 30px 0;
     padding: 10px 0;
+    transition: all 0.5s ease;
 }
 
 .text-content {
@@ -369,7 +521,8 @@ body {
     animation: scroll 10s linear infinite;
     font-size: 1.5rem;
     font-weight: bold;
-    color: #ffff00;
+    color: var(--text-secondary);
+    transition: color 0.5s ease;
 }
 
 @keyframes scroll {
@@ -382,9 +535,10 @@ body {
     text-align: center;
     margin-top: 40px;
     padding: 20px;
-    background: rgba(0, 0, 0, 0.8);
+    background: var(--card-bg);
     border-radius: 15px;
-    border: 3px solid #ff0080;
+    border: 3px solid var(--accent-color);
+    transition: all 0.5s ease;
 }
 
 .footer p {
