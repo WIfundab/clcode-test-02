@@ -44,7 +44,7 @@ body.night-mode {
     color: var(--text-primary);
     font-family: 'Arial Black', Arial, sans-serif;
     font-weight: 900;
-    font-size: 1rem;
+    font-size: 1.2rem;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow: 
@@ -286,7 +286,7 @@ body.night-mode {
 }
 
 .main-title {
-    font-size: 3.5rem;
+    font-size: 5rem;
     font-weight: 900;
     text-shadow: 
         3px 3px 0 #000,
@@ -316,7 +316,7 @@ body.night-mode {
 }
 
 .subtitle {
-    font-size: 2rem;
+    font-size: 2.8rem;
     color: var(--text-secondary);
     text-shadow: 2px 2px 0 #000;
     transition: color 0.5s ease;
@@ -354,7 +354,7 @@ body.night-mode .promotion-box {
 }
 
 .flash-text {
-    font-size: 2rem;
+    font-size: 2.8rem;
     font-weight: 900;
     text-shadow: 3px 3px 0 #000;
     animation: flash 1s infinite;
@@ -372,12 +372,12 @@ body.night-mode .promotion-box {
 .old-price {
     text-decoration: line-through;
     color: #ffcccc;
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     margin-right: 20px;
 }
 
 .new-price {
-    font-size: 2.5rem;
+    font-size: 3.5rem;
     font-weight: 900;
     color: var(--text-secondary);
     text-shadow: 3px 3px 0 #000;
@@ -444,13 +444,13 @@ body.night-mode .feature-card.blue {
 }
 
 .feature-card h3 {
-    font-size: 1.8rem;
+    font-size: 2.4rem;
     margin-bottom: 15px;
     text-shadow: 2px 2px 0 rgba(0,0,0,0.5);
 }
 
 .feature-card p {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     font-weight: bold;
 }
 
@@ -462,7 +462,7 @@ body.night-mode .feature-card.blue {
     color: #fff;
     padding: 10px 15px;
     border-radius: 50%;
-    font-size: 1rem;
+    font-size: 1.4rem;
     font-weight: 900;
     border: 3px solid #ffff00;
     transform: rotate(15deg);
@@ -485,7 +485,7 @@ body.night-mode .feature-card.blue {
     border: 5px solid #000;
     border-radius: 20px;
     padding: 20px 40px;
-    font-size: 2rem;
+    font-size: 2.6rem;
     font-weight: 900;
     color: #000;
     cursor: pointer;
@@ -519,7 +519,7 @@ body.night-mode .feature-card.blue {
 .text-content {
     display: inline-block;
     animation: scroll 10s linear infinite;
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: bold;
     color: var(--text-secondary);
     transition: color 0.5s ease;
@@ -542,13 +542,13 @@ body.night-mode .feature-card.blue {
 }
 
 .footer p {
-    font-size: 1.2rem;
+    font-size: 1.6rem;
     font-weight: bold;
     margin-bottom: 10px;
 }
 
 .sparkles {
-    font-size: 2rem;
+    font-size: 2.6rem;
     animation: sparkle 1.5s ease-in-out infinite;
 }
 
@@ -568,7 +568,7 @@ body.night-mode .feature-card.blue {
     padding: 30px;
     border: 5px solid #000;
     border-radius: 20px;
-    font-size: 2rem;
+    font-size: 2.8rem;
     font-weight: 900;
     text-align: center;
     z-index: 1000;
@@ -590,19 +590,19 @@ body.night-mode .feature-card.blue {
 /* レスポンシブ対応 */
 @media (max-width: 768px) {
     .main-title {
-        font-size: 2.5rem;
+        font-size: 3.5rem;
     }
     
     .subtitle {
-        font-size: 1.5rem;
+        font-size: 2rem;
     }
     
     .flash-text {
-        font-size: 1.5rem;
+        font-size: 2rem;
     }
     
     .donki-button {
-        font-size: 1.5rem;
+        font-size: 2rem;
         padding: 15px 30px;
     }
     
@@ -684,7 +684,7 @@ body.night-mode .feature-card.blue {
 }
 
 .shrimp-title {
-    font-size: 3rem;
+    font-size: 4rem;
     font-weight: 900;
     color: #fff;
     text-shadow: 
@@ -711,7 +711,7 @@ body.night-mode .feature-card.blue {
 }
 
 .dancing-shrimp {
-    font-size: 4rem;
+    font-size: 5rem;
     cursor: pointer;
     transition: all 0.3s ease;
     position: relative;
@@ -828,7 +828,7 @@ body.night-mode .feature-card.blue {
 }
 
 .shrimp-message {
-    font-size: 1.5rem;
+    font-size: 2rem;
     font-weight: bold;
     color: #fff;
     text-shadow: 2px 2px 0 #000;
@@ -854,11 +854,11 @@ body.night-mode .feature-card.blue {
 /* エビセクションのレスポンシブ対応 */
 @media (max-width: 768px) {
     .shrimp-title {
-        font-size: 2rem;
+        font-size: 2.8rem;
     }
     
     .dancing-shrimp {
-        font-size: 3rem;
+        font-size: 4rem;
     }
     
     .shrimp-container {
@@ -866,6 +866,6 @@ body.night-mode .feature-card.blue {
     }
     
     .shrimp-message {
-        font-size: 1.2rem;
+        font-size: 1.6rem;
     }
 }
